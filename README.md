@@ -1,36 +1,37 @@
 # ChefHughProject
 
-React + Vite app that generates recipes from ingredients using a secure serverless API on Vercel.
+ChefHughProject is a React + Vite app that turns your ingredients into recipe ideas.
+The frontend talks to a secure serverless API on Vercel, so your Hugging Face token stays on the server.
 
-## Local development
+## Run locally
 
 1. Install dependencies:
 
-	```bash
-	npm install
-	```
+```bash
+npm install
+```
 
 2. Create `.env.local` for frontend settings:
 
-	```bash
-	VITE_API_BASE_URL=
-	```
+```bash
+VITE_API_BASE_URL=
+```
 
-	Or copy from `.env.example` and fill in your own values.
+You can also copy `.env.example` and fill in your values.
 
-	- Keep `VITE_API_BASE_URL` empty when frontend and backend are served from the same origin.
-	- For local Vite dev (`npm run dev`) against a deployed backend, set this to your deployed Vercel URL, for example:
-	  `VITE_API_BASE_URL=https://your-project.vercel.app`
+- Leave `VITE_API_BASE_URL` empty if frontend and backend are served from the same origin.
+- If running local Vite (`npm run dev`) against a deployed backend, set it to your Vercel URL, for example:
+  `VITE_API_BASE_URL=https://your-project.vercel.app`
 
-3. Start app:
+3. Start the app:
 
-	```bash
-	npm run dev
-	```
+```bash
+npm run dev
+```
 
-## Secure deployment on Vercel
+## Deploy to Vercel
 
-### 1) Push project to GitHub
+### 1) Push the project to GitHub
 
 ```bash
 git init
@@ -41,25 +42,27 @@ git remote add origin https://github.com/<your-username>/<your-repo>.git
 git push -u origin main
 ```
 
-### 2) Import repo in Vercel
+### 2) Import the repo in Vercel
 
-- In Vercel dashboard, choose **Add New Project** and import your GitHub repo.
-- Framework preset: **Vite** (auto-detected).
+- In the Vercel dashboard, select **Add New Project**.
+- Import your GitHub repository.
+- Keep the framework preset as **Vite** (auto-detected).
 
-### 3) Set environment variables in Vercel
+### 3) Add environment variables in Vercel
 
-- `HF_ACCESS_TOKEN`: your Hugging Face token.
-- `ALLOWED_ORIGINS`: comma-separated allowed origins.
-  Example:
-  `http://localhost:5173,https://your-project.vercel.app`
+- `HF_ACCESS_TOKEN`: your Hugging Face access token.
+- `ALLOWED_ORIGINS`: comma-separated list of allowed origins.
+
+Example:
+`http://localhost:5173,https://your-project.vercel.app`
 
 ### 4) Deploy
 
-- Trigger deploy from Vercel UI (or push to `main`).
-- Your frontend and `/api/recipe` run on the same Vercel project.
+- Deploy from the Vercel UI (or push to `main`).
+- Frontend and `/api/recipe` are hosted in the same Vercel project.
 
-## Security notes
+## Security checklist
 
-- Do **not** put `HF_ACCESS_TOKEN` in frontend env vars.
-- Frontend calls `/api/recipe`; serverless function calls Hugging Face with server-side secret.
-- Commit `.env.example`, but do not commit `.env.local`.
+- Never put `HF_ACCESS_TOKEN` in frontend-exposed variables.
+- Frontend calls `/api/recipe`; only the serverless function talks to Hugging Face.
+- Commit `.env.example` for contributors, but keep `.env.local` private.
