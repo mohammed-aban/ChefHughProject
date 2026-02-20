@@ -4,7 +4,7 @@ import IngredientsList from "./IngredientsList"
 import { getRecipeFromChefHugh } from "../ai"
 
 export default function Main() {
-    const [ingredients, setIngredients] = useState(["Chicken Thighs", "Mayonnaise", "All purpose flour", "Garlic"])
+    const [ingredients, setIngredients] = useState([])
     const [recipeShown, setRecipeShown] = useState(false)
     const [recipeMarkdown, setRecipeMarkdown] = useState("")
     const [recipeError, setRecipeError] = useState("")
