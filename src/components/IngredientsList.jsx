@@ -1,15 +1,15 @@
 import React from 'react'
 
-export default function IngredientsList(props) {
+export default function IngredientsList({ ref, ingredients, renderRecipe}) {
 
-    const ingredientsList = props.ingredients.map((ingredient) => {
+    const ingredientsList = ingredients.map((ingredient) => {
       return (
           <li className="ingredients-list__item" key={ingredient}>{ingredient}</li>
       )
     })
 
     function decideSummary() {
-    if (props.ingredients.length < 4) {
+    if (ingredients.length < 4) {
       return "Please add at least 4 ingredients so Chef Hugh can craft the most relevant, high-quality recipe suggestions for you."
     }
 
@@ -22,13 +22,13 @@ export default function IngredientsList(props) {
         <ul className="ingredients-list">{ingredientsList}</ul>
 
     <section className="ingredients-summary" aria-live="polite">
-        <div className="ingredients-summary__content">
+        <div className="ingredients-summary__content" ref={ref}>
             <h2 className="ingredients-summary__title">Ready to cook?</h2>
             <p className="ingredients-summary__text">
             {decideSummary()}
             </p>
         </div>
-        {props.ingredients.length > 3 ?<button className="ingredients-summary__button" type="button" onClick={props.renderRecipe}>
+        {ingredients.length > 3 ?<button className="ingredients-summary__button" type="button" onClick={renderRecipe}>
         Get recipes
         </button> : null}
     </section>

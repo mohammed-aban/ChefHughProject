@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import HughRecipe from "./HughRecipe"
 import IngredientsList from "./IngredientsList"
 import { getRecipeFromChefHugh } from "../ai"
@@ -6,9 +6,12 @@ import { getRecipeFromChefHugh } from "../ai"
 export default function Main() {
     const [ingredients, setIngredients] = useState([])
     const [recipeShown, setRecipeShown] = useState(false)
+  const [recipeName, setRecipeName] = useState("")
     const [recipeMarkdown, setRecipeMarkdown] = useState("")
     const [recipeError, setRecipeError] = useState("")
     const [isLoadingRecipe, setIsLoadingRecipe] = useState(false)
+    const recipeSection = useRef(null)
+    console.log(recipeSection)
 
   function addIngredient(formData) {
     const newIngredient = formData.get("ingredient")
@@ -23,14 +26,22 @@ export default function Main() {
 
     try {
       const generatedRecipe = await getRecipeFromChefHugh(ingredients)
-      setRecipeMarkdown(generatedRecipe)
+      setRecipeName(generatedRecipe.recipeName || "")
+      setRecipeMarkdown(generatedRecipe.recipeMarkdown || "")
     } catch (error) {
+      setRecipeName("")
       setRecipeMarkdown("")
       setRecipeError(error?.message || "Unable to generate recipe right now.")
     } finally {
       setIsLoadingRecipe(false)
     }
   }
+
+  useEffect(() => {
+    if (recipeMarkdown !== "" && recipeSection !== null) {
+      recipeSection.current.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [recipeMarkdown])
 
   return (
     <main className="main">
@@ -49,8 +60,8 @@ export default function Main() {
 
       {ingredients.length > 0 ? (
         <>
-          <IngredientsList ingredients={ingredients} renderRecipe={renderRecipe}/>
-          {recipeShown ? <HughRecipe recipeMarkdown={recipeMarkdown} isLoading={isLoadingRecipe} error={recipeError} ingredients={ingredients} /> : null}
+          <IngredientsList ingredients={ingredients} renderRecipe={renderRecipe} ref={recipeSection}/>
+          {recipeShown ? <HughRecipe recipeName={recipeName} recipeMarkdown={recipeMarkdown} isLoading={isLoadingRecipe} error={recipeError} ingredients={ingredients} /> : null}
         </>
       ) : null}
     </main>

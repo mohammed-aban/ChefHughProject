@@ -7,8 +7,7 @@ const markdownComponents = {
   h3: ({ children }) => <strong>{children}</strong>
 }
 
-export default function HughRecipe({ recipeMarkdown, isLoading, error, ingredients = [] }) {
-  const fallbackRecipeName = ingredients.length > 0 ? `${ingredients[0]} Special` : "Chef Hugh Special"
+export default function HughRecipe({ recipeName, recipeMarkdown, isLoading, error }) {
 
   if (isLoading) {
     return (
@@ -36,11 +35,13 @@ export default function HughRecipe({ recipeMarkdown, isLoading, error, ingredien
     return null
   }
 
+  const safeRecipeName = recipeName?.trim() || "Chef Hugh Special"
+
   return (
     <section className="suggested-recipes-section">
       <h2>Chef Hugh Recommends:</h2>
       <article className="suggested-recipe-container" aria-live="polite">
-        <p>Based on the ingredients you have available, I would recommend making a simple and delicious <strong>{fallbackRecipeName}</strong>. Here is the recipe:</p>
+        <p>Based on the ingredients you have available, I would recommend making a simple and delicious <strong>{safeRecipeName}</strong>. Here is the recipe:</p>
         <ReactMarkdown components={markdownComponents}>{recipeMarkdown}</ReactMarkdown>
       </article>
     </section>

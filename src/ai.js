@@ -49,7 +49,10 @@ export async function getRecipeFromChefHugh(ingredientsArr) {
       throw new Error(getFriendlyFetchError(data))
     }
 
-    return (data?.recipeMarkdown || "").trim() || "No recipe generated."
+    return {
+      recipeName: (data?.recipeName || "").trim(),
+      recipeMarkdown: (data?.recipeMarkdown || "").trim() || "No recipe generated."
+    }
   } catch (error) {
     if (error?.name === "AbortError") {
       throw new Error("The recipe request took too long. Please try again.")
