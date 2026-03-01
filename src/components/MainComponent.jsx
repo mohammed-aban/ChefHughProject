@@ -6,12 +6,11 @@ import { getRecipeFromChefHugh } from "../ai"
 export default function Main() {
     const [ingredients, setIngredients] = useState([])
     const [recipeShown, setRecipeShown] = useState(false)
-  const [recipeName, setRecipeName] = useState("")
+	const [recipeName, setRecipeName] = useState("")
     const [recipeMarkdown, setRecipeMarkdown] = useState("")
     const [recipeError, setRecipeError] = useState("")
     const [isLoadingRecipe, setIsLoadingRecipe] = useState(false)
     const recipeSection = useRef(null)
-    console.log(recipeSection)
 
   function addIngredient(formData) {
     const newIngredient = formData.get("ingredient")
